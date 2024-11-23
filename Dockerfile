@@ -1,7 +1,9 @@
 FROM php:8.2-apache
 
-RUN apt-get update && \
-    apt-get install -y php5-mysql && \
-    apt-get clean
+RUN apt-get update && apt-get install -y php-imagick php-mysqli
 
-COPY api /var/www/html/
+# Copy your application code
+COPY api /var/www/html
+
+# Run your application (optional)
+CMD ["apache2-foreground"]
