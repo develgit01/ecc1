@@ -6,7 +6,7 @@
     </head>
     <body>
         <p>
-            Hello. Today is <?= date('l \t\h\e jS') ?>.
+            Hola, la fecha actual es <?= date('l \t\h\e jS') ?>.
         </p>
     </body>
 </html>
