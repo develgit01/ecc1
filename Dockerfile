@@ -1,18 +1,14 @@
-FROM debian:buster-slim
+# Usar la imagen oficial de MariaDB como base
+FROM mariadb:latest
 
-# Actualizar el sistema de paquetes
-RUN apt-get update && apt-get install -y \
-    mariadb-server \
-    default-libmysqlclient-dev
+# Establecer variables de entorno para MariaDB
+ENV MYSQL_ROOT_PASSWORD=my-secret-pw
+ENV MYSQL_DATABASE=mydatabase
+ENV MYSQL_USER=myuser
+ENV MYSQL_PASSWORD=mypassword
 
-
-# Exponer el puerto 3306 para conexiones remotas
+# Exponer el puerto 3306
 EXPOSE 3306
 
-# Establecer el directorio de datos de MariaDB
-VOLUME /var/lib/mysql
-# Configurar MariaDB
-COPY mariadb.conf /etc/mysql/mariadb.conf.d/50-my-conf.cnf
-
-# Iniciar el servidor MariaDB en primer plano
+# Comando para iniciar MariaDB
 CMD ["mysqld"]
