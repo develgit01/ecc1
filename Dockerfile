@@ -10,6 +10,11 @@ ENV MYSQL_PASSWORD=mypassword
 # Exponer el puerto 3306
 EXPOSE 3306
 
-# Comando para iniciar MariaDB usando el script de entrada
-ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["mariadbd"]
+# Copiar el script de inicio personalizado al contenedor
+COPY start.sh /usr/local/bin/start.sh
+
+# Hacer el script ejecutable
+RUN chmod +x /usr/local/bin/start.sh
+
+# Comando para iniciar el contenedor usando el script de inicio personalizado
+CMD ["/usr/local/bin/start.sh"]
