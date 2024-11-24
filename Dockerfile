@@ -1,5 +1,5 @@
 # Usar una imagen base de Ubuntu
-FROM ubuntu:20.04
+
 
 # Instalar dependencias necesarias
 RUN apt-get update && apt-get install -y \
