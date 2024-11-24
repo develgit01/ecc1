@@ -1,6 +1,9 @@
 # Usar la imagen oficial de MariaDB como base
 FROM mariadb:latest
 
+# Instalar el cliente de MariaDB
+RUN apt-get update && apt-get install -y mariadb-client
+
 # Establecer variables de entorno para MariaDB
 ENV MYSQL_ROOT_PASSWORD=my-secret-pw
 ENV MYSQL_DATABASE=mydatabase
