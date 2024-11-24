@@ -1,13 +1,4 @@
-FROM php:8.2-apache
-
-# Copiar el archivo de configuración de Apache
-COPY apache/apache-config.conf /etc/apache2/sites-available/ecc1.conf
-
-# Habilitar el sitio
-RUN ecc1 ecc1.conf
-
-# Reiniciar Apache
-RUN service apache2 restart
+FROM php:8.1-apache
 
 # Set the working directory
 WORKDIR /var/www/html
@@ -21,7 +12,6 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-install \
     mbstring \
     zip
-RUN docker-php-ext-install imagick mysqli
 
 # Copy over the Laravel project
 COPY . .
@@ -43,8 +33,3 @@ EXPOSE 80
 # Adjusting Apache configurations
 RUN a2enmod rewrite
 COPY apache/apache-config.conf /etc/apache2/sites-available/000-default.conf
-
-
-# Comando para iniciar tu aplicación
-CMD ["php-fpm"]
-
