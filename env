@@ -22,7 +22,7 @@
 
 app.baseURL = 'https://ecc1-bqo6awn6.b4a.run/'
 # If you have trouble with `.`, you could also use `_`.
-# app_baseURL = ''
+app_baseURL = 'https://ecc1-bqo6awn6.b4a.run/'
 # app.forceGlobalSecureRequests = false
 
 # app.sessionDriver = 'CodeIgniter\Session\Handlers\FileHandler'
