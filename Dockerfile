@@ -1,43 +1,18 @@
-# syntax=docker/dockerfile:1
+FROM debian:buster-slim
 
-FROM ghcr.io/linuxserver/baseimage-alpine:arm64v8-3.20
+# Actualizar el sistema de paquetes
+RUN apt-get update && apt-get install -y \
+    mariadb-server \
+    default-libmysqlclient-dev
 
-# set version label
-ARG BUILD_DATE
-ARG VERSION
-ARG MARIADB_VERSION
-LABEL build_version="Linuxserver.io version:- ${VERSION} Build-date:- ${BUILD_DATE}"
-LABEL maintainer="thelamer,nemchik"
+# Configurar MariaDB
+COPY mariadb.conf /etc/mysql/mariadb.conf.d/50-my-conf.cnf
 
-# environment variables
-ENV MYSQL_DIR="/config"
-ENV DATADIR=$MYSQL_DIR/databases
-
-RUN \
-  echo "**** install runtime packages ****" && \
-  if [ -z ${MARIADB_VERSION+x} ]; then \
-    MARIADB_VERSION=$(curl -sL "http://dl-cdn.alpinelinux.org/alpine/v3.20/main/x86_64/APKINDEX.tar.gz" | tar -xz -C /tmp \
-    && awk '/^P:mariadb$/,/V:/' /tmp/APKINDEX | sed -n 2p | sed 's/^V://'); \
-  fi && \
-  apk add --no-cache \
-    gnupg \
-    mariadb==${MARIADB_VERSION} \
-    mariadb-backup==${MARIADB_VERSION} \
-    mariadb-client==${MARIADB_VERSION} \
-    mariadb-common==${MARIADB_VERSION} \
-    mariadb-server-utils==${MARIADB_VERSION} && \
-  mkdir -p \
-    /var/lib/mysql && \
-  printf "Linuxserver.io version: ${VERSION}\nBuild-date: ${BUILD_DATE}" > /build_version && \
-  echo "**** cleanup ****" && \
-  rm -rf \
-    /tmp/* \
-    $HOME/.cache
-
-# copy local files
-COPY root/ /
-
-# ports and volumes
+# Exponer el puerto 3306 para conexiones remotas
 EXPOSE 3306
 
-VOLUME /config
+# Establecer el directorio de datos de MariaDB
+VOLUME /var/lib/mysql
+
+# Iniciar el servidor MariaDB en primer plano
+CMD ["mysqld"]
