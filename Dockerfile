@@ -1,37 +1,38 @@
-# Usar una imagen base de Ubuntu
-FROM ubuntu:20.04
+# Copyright (c) 2017, Oracle and/or its affiliates. All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; version 2 of the License.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+FROM oraclelinux:7-slim
 
-# Instalar dependencias necesarias
-RUN apt-get update && apt-get install -y \
-    debconf-utils \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+ARG MYSQL_SERVER_PACKAGE=mysql-community-server-minimal-8.0.23
+ARG MYSQL_SHELL_PACKAGE=mysql-shell-8.0.22
 
-# Preconfigurar MySQL para evitar la interacción interactiva
-RUN echo "mysql-server mysql-server/root_password password rootpassword" | debconf-set-selections && \
-    echo "mysql-server mysql-server/root_password_again password rootpassword" | debconf-set-selections && \
-    echo "mysql-server mysql-server/data-dir select ''" | debconf-set-selections && \
-    echo "mysql-server mysql-server/start_on_boot boolean true" | debconf-set-selections && \
-    echo "mysql-server mysql-server/default-auth-override select ''" | debconf-set-selections && \
-    echo "mysql-server mysql-server/default-auth-override-warning select ''" | debconf-set-selections && \
-    echo "mysql-server mysql-server/remove-data-dir boolean false" | debconf-set-selections && \
-    echo "mysql-server mysql-server/really_downgrade boolean true" | debconf-set-selections
+# Install server
+RUN yum install -y https://repo.mysql.com/mysql-community-minimal-release-el7.rpm \
+      https://repo.mysql.com/mysql-community-release-el7.rpm \
+  && yum-config-manager --enable mysql80-server-minimal \
+  && yum install -y \
+      $MYSQL_SERVER_PACKAGE \
+      $MYSQL_SHELL_PACKAGE \
+      libpwquality \
+  && yum clean all \
+  && mkdir /docker-entrypoint-initdb.d
 
-# Instalar MySQL Server
-RUN apt-get update && apt-get install -y \
-    mysql-server \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+VOLUME /var/lib/mysql
 
-# Configurar MySQL
-RUN service mysql start && \
-    mysql -u root -prootpassword -e "CREATE DATABASE mydatabase;" && \
-    mysql -u root -prootpassword -e "CREATE USER 'myuser'@'localhost' IDENTIFIED BY 'mypassword';" && \
-    mysql -u root -prootpassword -e "GRANT ALL PRIVILEGES ON mydatabase.* TO 'myuser'@'localhost';" && \
-    mysql -u root -prootpassword -e "FLUSH PRIVILEGES;"
-
-# Exponer el puerto 3306 para MySQL
+COPY docker-entrypoint.sh /entrypoint.sh
+COPY healthcheck.sh /healthcheck.sh
+ENTRYPOINT ["/entrypoint.sh"]
+HEALTHCHECK CMD /healthcheck.sh
 EXPOSE 3306
-
-# Comando para ejecutar MySQL
 CMD ["mysqld"]
