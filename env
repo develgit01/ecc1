@@ -21,9 +21,9 @@ CI_ENVIRONMENT = development
 # APP
 #--------------------------------------------------------------------
 
-app.baseURL = 'https://ecc1-bqo6awn6.b4a.run/'
+app.baseURL = 'http://127.0.0.1'
 # If you have trouble with `.`, you could also use `_`.
-app_baseURL = 'https://ecc1-bqo6awn6.b4a.run/'
+app_baseURL = 'http://127.0.0.1'
 # app.forceGlobalSecureRequests = false
 
 # app.sessionDriver = 'CodeIgniter\Session\Handlers\FileHandler'
