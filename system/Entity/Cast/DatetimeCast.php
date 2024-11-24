@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -23,9 +25,9 @@ class DatetimeCast extends BaseCast
     /**
      * {@inheritDoc}
      *
-     * @throws Exception
-     *
      * @return Time
+     *
+     * @throws Exception
      */
     public static function get($value, array $params = [])
     {
@@ -38,7 +40,7 @@ class DatetimeCast extends BaseCast
         }
 
         if (is_numeric($value)) {
-            return Time::createFromTimestamp($value);
+            return Time::createFromTimestamp((int) $value);
         }
 
         if (is_string($value)) {

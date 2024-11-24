@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -22,9 +24,9 @@ interface SecurityInterface
     /**
      * CSRF Verify
      *
-     * @throws SecurityException
-     *
      * @return $this|false
+     *
+     * @throws SecurityException
      */
     public function verify(RequestInterface $request);
 
@@ -47,13 +49,6 @@ interface SecurityInterface
      * Returns the CSRF Cookie Name.
      */
     public function getCookieName(): string;
-
-    /**
-     * Check if CSRF cookie is expired.
-     *
-     * @deprecated
-     */
-    public function isExpired(): bool;
 
     /**
      * Check if request should be redirect on failure.

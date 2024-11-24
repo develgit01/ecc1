@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -12,6 +14,7 @@
 namespace CodeIgniter\HTTP;
 
 use Config\App;
+use Locale;
 use RuntimeException;
 
 /**
@@ -24,6 +27,8 @@ use RuntimeException;
  * originally made available under.
  *
  * http://fuelphp.com
+ *
+ * @see \CodeIgniter\HTTP\CLIRequestTest
  */
 class CLIRequest extends Request
 {
@@ -53,7 +58,7 @@ class CLIRequest extends Request
      *
      * @var string
      */
-    protected $method = 'cli';
+    protected $method = 'CLI';
 
     /**
      * Constructor
@@ -70,6 +75,9 @@ class CLIRequest extends Request
         ignore_user_abort(true);
 
         $this->parseCommand();
+
+        // Set SiteURI for this request
+        $this->uri = new SiteURI($config, $this->getPath());
     }
 
     /**
@@ -89,7 +97,7 @@ class CLIRequest extends Request
     {
         $path = implode('/', $this->segments);
 
-        return empty($path) ? '' : $path;
+        return ($path === '') ? '' : $path;
     }
 
     /**
@@ -141,7 +149,7 @@ class CLIRequest extends Request
      */
     public function getOptionString(bool $useLongOpts = false): string
     {
-        if (empty($this->options)) {
+        if ($this->options === []) {
             return '';
         }
 
@@ -174,6 +182,8 @@ class CLIRequest extends Request
      *
      * NOTE: I tried to use getopt but had it fail occasionally to find
      * any options, where argv has always had our back.
+     *
+     * @return void
      */
     protected function parseCommand()
     {
@@ -213,5 +223,105 @@ class CLIRequest extends Request
     public function isCLI(): bool
     {
         return true;
+    }
+
+    /**
+     * Fetch an item from GET data.
+     *
+     * @param array|string|null $index  Index for item to fetch from $_GET.
+     * @param int|null          $filter A filter name to apply.
+     * @param array|int|null    $flags
+     *
+     * @return array|null
+     */
+    public function getGet($index = null, $filter = null, $flags = null)
+    {
+        return $this->returnNullOrEmptyArray($index);
+    }
+
+    /**
+     * Fetch an item from POST.
+     *
+     * @param array|string|null $index  Index for item to fetch from $_POST.
+     * @param int|null          $filter A filter name to apply
+     * @param array|int|null    $flags
+     *
+     * @return array|null
+     */
+    public function getPost($index = null, $filter = null, $flags = null)
+    {
+        return $this->returnNullOrEmptyArray($index);
+    }
+
+    /**
+     * Fetch an item from POST data with fallback to GET.
+     *
+     * @param array|string|null $index  Index for item to fetch from $_POST or $_GET
+     * @param int|null          $filter A filter name to apply
+     * @param array|int|null    $flags
+     *
+     * @return array|null
+     */
+    public function getPostGet($index = null, $filter = null, $flags = null)
+    {
+        return $this->returnNullOrEmptyArray($index);
+    }
+
+    /**
+     * Fetch an item from GET data with fallback to POST.
+     *
+     * @param array|string|null $index  Index for item to be fetched from $_GET or $_POST
+     * @param int|null          $filter A filter name to apply
+     * @param array|int|null    $flags
+     *
+     * @return array|null
+     */
+    public function getGetPost($index = null, $filter = null, $flags = null)
+    {
+        return $this->returnNullOrEmptyArray($index);
+    }
+
+    /**
+     * This is a place holder for calls from cookie_helper get_cookie().
+     *
+     * @param array|string|null $index  Index for item to be fetched from $_COOKIE
+     * @param int|null          $filter A filter name to be applied
+     * @param mixed             $flags
+     *
+     * @return array|null
+     */
+    public function getCookie($index = null, $filter = null, $flags = null)
+    {
+        return $this->returnNullOrEmptyArray($index);
+    }
+
+    /**
+     * @param array|string|null $index
+     *
+     * @return array|null
+     */
+    private function returnNullOrEmptyArray($index)
+    {
+        return ($index === null || is_array($index)) ? [] : null;
+    }
+
+    /**
+     * Gets the current locale, with a fallback to the default
+     * locale if none is set.
+     */
+    public function getLocale(): string
+    {
+        return Locale::getDefault();
+    }
+
+    /**
+     * Checks this request type.
+     *
+     * @param         string                                                                    $type HTTP verb or 'json' or 'ajax'
+     * @phpstan-param string|'get'|'post'|'put'|'delete'|'head'|'patch'|'options'|'json'|'ajax' $type
+     */
+    public function is(string $type): bool
+    {
+        return false;
     }
 }
