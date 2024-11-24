@@ -1,7 +1,5 @@
 FROM php:8.2-apache
 
-FROM php:8.2-apache-fpm
-
 # Copiar el archivo de configuración de Apache
 COPY apache/apache-config.conf /etc/apache2/sites-available/ecc1.conf
 
