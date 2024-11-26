@@ -8,24 +8,23 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && docker-php-ext-install pdo pdo_mysql mysqli
 
-# Habilitar mod_rewrite de Apache para soporte de .htaccess
+# Habilitar mod_rewrite de Apache
 RUN a2enmod rewrite
 
 # Configuración de permisos para Apache
-# Asegura que los archivos en /var/www/html sean accesibles por Apache
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
+RUN echo '<Directory "/var/www/html">
+    Options Indexes FollowSymLinks
+    AllowOverride All
+    Require all granted
+</Directory>' > /etc/apache2/conf-available/permissions.conf && \
+    a2enconf permissions
 
-# Establecer permisos por defecto para el directorio de trabajo
+# Cambiar permisos de los archivos
+RUN chown -R www-data:www-data /var/www/html && \
+    chmod -R 755 /var/www/html
+
+# Establecer directorio de trabajo
 WORKDIR /var/www/html
 
 # Copiar los archivos de la aplicación al contenedor
 COPY ./src /var/www/html
-
-# Configuración personalizada de Apache para permitir acceso
-RUN echo "<Directory /var/www/html>
-    Options Indexes FollowSymLinks
-    AllowOverride All
-    Require all granted
-</Directory>" > /etc/apache2/conf-available/permissions.conf \
-    && a2enconf permissions
