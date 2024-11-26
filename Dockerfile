@@ -1,24 +1,19 @@
-# Usar una imagen base oficial de Python
+# Base Image
 FROM python:3.9-slim
 
-# Establecer el directorio de trabajo en el contenedor
+# Work directory
 WORKDIR /app
 
-# Copiar los archivos de la aplicación al contenedor
-COPY . /app
+# Copy requirements and install dependencies
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
 
-# Instalar virtualenv y crear un entorno virtual
-RUN pip install virtualenv
-RUN virtualenv venv
+# Copy other project files
+COPY . .
 
-# Activar el entorno virtual y actualizar pip
-RUN . venv/bin/activate && pip install --upgrade pip
+# Expose a port to Containers 
+EXPOSE 8080
 
-# Instalar las dependencias
-RUN . venv/bin/activate && pip install --no-cache-dir -r requirements.txt
+# Command to run on server
+CMD ["gunicorn", "-b", "0.0.0.0:8080", "app:app"]
 
-# Exponer el puerto en el que la aplicación Flask correrá
-EXPOSE 5000
-
-# Comando para ejecutar la aplicación Flask
-CMD ["./venv/bin/python", "app.py"]
