@@ -1,15 +1,16 @@
 from flask import Flask, jsonify, request
 import mysql.connector
 from mysql.connector import Error
+import os
 
 app = Flask(__name__)
 
-# Configuración de la conexión a MySQL
+# Configuración de la conexión a MySQL usando variables de entorno
 db_config = {
-    'user': 'your_username',
-    'password': 'your_password',
-    'host': 'your_host',
-    'database': 'your_database'
+    'user': os.getenv('DB_USER'),
+    'password': os.getenv('DB_PASSWORD'),
+    'host': os.getenv('DB_HOST'),
+    'database': os.getenv('DB_NAME')
 }
 
 def get_db_connection():
