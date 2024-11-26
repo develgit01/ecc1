@@ -2,7 +2,7 @@ import sqlite3
 
 def create_database():
     # Conectar a la base de datos SQLite (o crearla si no existe)
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect('/kaniko/buildcontext/database.db')
     cursor = conn.cursor()
 
     # Crear la tabla users
@@ -26,7 +26,7 @@ def create_database():
 
 def show_table_data():
     # Conectar a la base de datos SQLite
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect('/kaniko/buildcontext/database.db')
     cursor = conn.cursor()
 
     # Ejecutar una consulta para obtener los datos de la tabla
