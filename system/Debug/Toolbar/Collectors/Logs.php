@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -83,8 +81,6 @@ class Logs extends BaseCollector
 
     /**
      * Ensures the data has been collected.
-     *
-     * @return array
      */
     protected function collectLogs()
     {

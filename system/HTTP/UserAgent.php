@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -14,14 +12,11 @@ declare(strict_types=1);
 namespace CodeIgniter\HTTP;
 
 use Config\UserAgents;
-use Stringable;
 
 /**
  * Abstraction for an HTTP user agent
- *
- * @see \CodeIgniter\HTTP\UserAgentTest
  */
-class UserAgent implements Stringable
+class UserAgent
 {
     /**
      * Current user-agent
@@ -96,7 +91,7 @@ class UserAgent implements Stringable
     /**
      * HTTP Referer
      *
-     * @var bool|string|null
+     * @var mixed
      */
     protected $referrer;
 
@@ -107,7 +102,7 @@ class UserAgent implements Stringable
      */
     public function __construct(?UserAgents $config = null)
     {
-        $this->config = $config ?? config(UserAgents::class);
+        $this->config = $config ?? new UserAgents();
 
         if (isset($_SERVER['HTTP_USER_AGENT'])) {
             $this->agent = trim($_SERVER['HTTP_USER_AGENT']);
@@ -117,6 +112,8 @@ class UserAgent implements Stringable
 
     /**
      * Is Browser
+     *
+     * @param string $key
      */
     public function isBrowser(?string $key = null): bool
     {
@@ -135,6 +132,8 @@ class UserAgent implements Stringable
 
     /**
      * Is Robot
+     *
+     * @param string $key
      */
     public function isRobot(?string $key = null): bool
     {
@@ -153,6 +152,8 @@ class UserAgent implements Stringable
 
     /**
      * Is Mobile
+     *
+     * @param string $key
      */
     public function isMobile(?string $key = null): bool
     {
@@ -246,8 +247,6 @@ class UserAgent implements Stringable
 
     /**
      * Parse a custom user-agent string
-     *
-     * @return void
      */
     public function parse(string $string)
     {
@@ -263,15 +262,13 @@ class UserAgent implements Stringable
         // Set the new user-agent string and parse it, unless empty
         $this->agent = $string;
 
-        if ($string !== '') {
+        if (! empty($string)) {
             $this->compileData();
         }
     }
 
     /**
      * Compile the User Agent Data
-     *
-     * @return void
      */
     protected function compileData()
     {

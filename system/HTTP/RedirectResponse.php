@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -19,8 +17,6 @@ use Config\Services;
 
 /**
  * Handle a redirect response
- *
- * @see \CodeIgniter\HTTP\RedirectResponseTest
  */
 class RedirectResponse extends Response
 {
@@ -28,7 +24,7 @@ class RedirectResponse extends Response
      * Sets the URI to redirect to and, optionally, the HTTP status code to use.
      * If no code is provided it will be automatically determined.
      *
-     * @param string   $uri  The URI path (relative to baseURL) to redirect to
+     * @param string   $uri  The URI to redirect to
      * @param int|null $code HTTP status code
      *
      * @return $this
@@ -37,7 +33,7 @@ class RedirectResponse extends Response
     {
         // If it appears to be a relative URL, then convert to full URL
         // for better security.
-        if (! str_starts_with($uri, 'http')) {
+        if (strpos($uri, 'http') !== 0) {
             $uri = site_url($uri);
         }
 
@@ -48,17 +44,17 @@ class RedirectResponse extends Response
      * Sets the URI to redirect to but as a reverse-routed or named route
      * instead of a raw URI.
      *
-     * @param string $route Route name or Controller::method
-     *
-     * @return $this
+     * @param string $route Named route or Controller::method
      *
      * @throws HTTPException
+     *
+     * @return $this
      */
-    public function route(string $route, array $params = [], ?int $code = null, string $method = 'auto')
+    public function route(string $route, array $params = [], int $code = 302, string $method = 'auto')
     {
         $namedRoute = $route;
 
-        $route = service('routes')->reverseRoute($route, ...$params);
+        $route = Services::routes()->reverseRoute($route, ...$params);
 
         if (! $route) {
             throw HTTPException::forInvalidRedirectRoute($namedRoute);
@@ -77,14 +73,14 @@ class RedirectResponse extends Response
      */
     public function back(?int $code = null, string $method = 'auto')
     {
-        service('session');
+        Services::session();
 
         return $this->redirect(previous_url(), $method, $code);
     }
 
     /**
-     * Sets the current $_GET and $_POST arrays in the session.
-     * This also saves the validation errors.
+     * Specifies that the current $_GET and $_POST arrays should be
+     * packaged up with the response.
      *
      * It will then be available via the 'old()' helper function.
      *
@@ -92,33 +88,37 @@ class RedirectResponse extends Response
      */
     public function withInput()
     {
-        $session = service('session');
+        $session = Services::session();
         $session->setFlashdata('_ci_old_input', [
             'get'  => $_GET ?? [],
             'post' => $_POST ?? [],
         ]);
 
+        // @TODO Remove this in the future.
+        //      See https://github.com/codeigniter4/CodeIgniter4/issues/5839#issuecomment-1086624600
         $this->withErrors();
 
         return $this;
     }
 
     /**
-     * Sets validation errors in the session.
+     * Set validation errors in the session.
      *
      * If the validation has any errors, transmit those back
      * so they can be displayed when the validation is handled
      * within a method different than displaying the form.
      *
+     * @TODO Make this method public when removing $this->withErrors() in withInput().
+     *
      * @return $this
      */
     private function withErrors(): self
     {
-        $validation = service('validation');
+        $validation = Services::validation();
 
         if ($validation->getErrors()) {
-            $session = service('session');
-            $session->setFlashdata('_ci_validation_errors', $validation->getErrors());
+            $session = Services::session();
+            $session->setFlashdata('_ci_validation_errors', serialize($validation->getErrors()));
         }
 
         return $this;
@@ -133,7 +133,7 @@ class RedirectResponse extends Response
      */
     public function with(string $key, $message)
     {
-        service('session')->setFlashdata($key, $message);
+        Services::session()->setFlashdata($key, $message);
 
         return $this;
     }
@@ -163,14 +163,8 @@ class RedirectResponse extends Response
      */
     public function withHeaders()
     {
-        foreach (Services::response()->headers() as $name => $value) {
-            if ($value instanceof Header) {
-                $this->setHeader($name, $value->getValue());
-            } else {
-                foreach ($value as $header) {
-                    $this->addHeader($name, $header->getValue());
-                }
-            }
+        foreach (Services::response()->headers() as $name => $header) {
+            $this->setHeader($name, $header->getValue());
         }
 
         return $this;

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -13,11 +11,10 @@ declare(strict_types=1);
 
 namespace CodeIgniter\Publisher;
 
-use CodeIgniter\Autoloader\FileLocatorInterface;
+use CodeIgniter\Autoloader\FileLocator;
 use CodeIgniter\Files\FileCollection;
 use CodeIgniter\HTTP\URI;
 use CodeIgniter\Publisher\Exceptions\PublisherException;
-use Config\Publisher as PublisherConfig;
 use RuntimeException;
 use Throwable;
 
@@ -42,7 +39,7 @@ class Publisher extends FileCollection
     /**
      * Array of discovered Publishers.
      *
-     * @var array<string, list<self>|null>
+     * @var array<string, self[]|null>
      */
     private static array $discovered = [];
 
@@ -62,7 +59,7 @@ class Publisher extends FileCollection
     /**
      * List of file published curing the last write operation.
      *
-     * @var list<string>
+     * @var string[]
      */
     private array $published = [];
 
@@ -72,9 +69,7 @@ class Publisher extends FileCollection
      *
      * @var array<string,string>
      */
-    private readonly array $restrictions;
-
-    private readonly ContentReplacer $replacer;
+    private array $restrictions;
 
     /**
      * Base path to use for the source.
@@ -90,14 +85,14 @@ class Publisher extends FileCollection
      */
     protected $destination = FCPATH;
 
-    // --------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // Support Methods
-    // --------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     /**
      * Discovers and returns all Publishers in the specified namespace directory.
      *
-     * @return list<self>
+     * @return self[]
      */
     final public static function discover(string $directory = 'Publishers'): array
     {
@@ -107,7 +102,7 @@ class Publisher extends FileCollection
 
         self::$discovered[$directory] = [];
 
-        /** @var FileLocatorInterface $locator */
+        /** @var FileLocator $locator */
         $locator = service('locator');
 
         if ([] === $files = $locator->listFiles($directory)) {
@@ -116,9 +111,9 @@ class Publisher extends FileCollection
 
         // Loop over each file checking to see if it is a Publisher
         foreach (array_unique($files) as $file) {
-            $className = $locator->findQualifiedNameFromPath($file);
+            $className = $locator->getClassname($file);
 
-            if ($className !== false && class_exists($className) && is_a($className, self::class, true)) {
+            if ($className !== '' && class_exists($className) && is_a($className, self::class, true)) {
                 self::$discovered[$directory][] = new $className();
             }
         }
@@ -148,9 +143,9 @@ class Publisher extends FileCollection
         }
     }
 
-    // --------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // Class Core
-    // --------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     /**
      * Loads the helper and verifies the source and destination directories.
@@ -162,14 +157,12 @@ class Publisher extends FileCollection
         $this->source      = self::resolveDirectory($source ?? $this->source);
         $this->destination = self::resolveDirectory($destination ?? $this->destination);
 
-        $this->replacer = new ContentReplacer();
-
         // Restrictions are intentionally not injected to prevent overriding
-        $this->restrictions = config(PublisherConfig::class)->restrictions;
+        $this->restrictions = config('Publisher')->restrictions;
 
         // Make sure the destination is allowed
         foreach (array_keys($this->restrictions) as $directory) {
-            if (str_starts_with($this->destination, $directory)) {
+            if (strpos($this->destination, $directory) === 0) {
                 return;
             }
         }
@@ -206,9 +199,9 @@ class Publisher extends FileCollection
         return $this->addPath('/')->merge(true);
     }
 
-    // --------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // Property Accessors
-    // --------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     /**
      * Returns the source directory.
@@ -254,21 +247,21 @@ class Publisher extends FileCollection
     /**
      * Returns the files published by the last write operation.
      *
-     * @return list<string>
+     * @return string[]
      */
     final public function getPublished(): array
     {
         return $this->published;
     }
 
-    // --------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // Additional Handlers
-    // --------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     /**
      * Verifies and adds paths to the list.
      *
-     * @param list<string> $paths
+     * @param string[] $paths
      *
      * @return $this
      */
@@ -296,7 +289,7 @@ class Publisher extends FileCollection
     /**
      * Downloads and stages files from an array of URIs.
      *
-     * @param list<string> $uris
+     * @param string[] $uris
      *
      * @return $this
      */
@@ -327,9 +320,9 @@ class Publisher extends FileCollection
         return $this->addFile($file);
     }
 
-    // --------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // Write Methods
-    // --------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     /**
      * Removes the destination and all its files and folders.
@@ -404,81 +397,6 @@ class Publisher extends FileCollection
     }
 
     /**
-     * Replace content
-     *
-     * @param array $replaces [search => replace]
-     */
-    public function replace(string $file, array $replaces): bool
-    {
-        $this->verifyAllowed($file, $file);
-
-        $content = file_get_contents($file);
-
-        $newContent = $this->replacer->replace($content, $replaces);
-
-        $return = file_put_contents($file, $newContent);
-
-        return $return !== false;
-    }
-
-    /**
-     * Add line after the line with the string
-     *
-     * @param string $after String to search.
-     */
-    public function addLineAfter(string $file, string $line, string $after): bool
-    {
-        $this->verifyAllowed($file, $file);
-
-        $content = file_get_contents($file);
-
-        $result = $this->replacer->addAfter($content, $line, $after);
-
-        if ($result !== null) {
-            $return = file_put_contents($file, $result);
-
-            return $return !== false;
-        }
-
-        return false;
-    }
-
-    /**
-     * Add line before the line with the string
-     *
-     * @param string $before String to search.
-     */
-    public function addLineBefore(string $file, string $line, string $before): bool
-    {
-        $this->verifyAllowed($file, $file);
-
-        $content = file_get_contents($file);
-
-        $result = $this->replacer->addBefore($content, $line, $before);
-
-        if ($result !== null) {
-            $return = file_put_contents($file, $result);
-
-            return $return !== false;
-        }
-
-        return false;
-    }
-
-    /**
-     * Verify this is an allowed file for its destination.
-     */
-    private function verifyAllowed(string $from, string $to): void
-    {
-        // Verify this is an allowed file for its destination
-        foreach ($this->restrictions as $directory => $pattern) {
-            if (str_starts_with($to, $directory) && self::matchFiles([$to], $pattern) === []) {
-                throw PublisherException::forFileNotAllowed($from, $directory, $pattern);
-            }
-        }
-    }
-
-    /**
      * Copies a file with directory creation and identical file awareness.
      * Intentionally allows errors.
      *
@@ -487,7 +405,11 @@ class Publisher extends FileCollection
     private function safeCopyFile(string $from, string $to, bool $replace): void
     {
         // Verify this is an allowed file for its destination
-        $this->verifyAllowed($from, $to);
+        foreach ($this->restrictions as $directory => $pattern) {
+            if (strpos($to, $directory) === 0 && self::matchFiles([$to], $pattern) === []) {
+                throw PublisherException::forFileNotAllowed($from, $directory, $pattern);
+            }
+        }
 
         // Check for an existing file
         if (file_exists($to)) {

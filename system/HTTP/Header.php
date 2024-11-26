@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -13,16 +11,12 @@ declare(strict_types=1);
 
 namespace CodeIgniter\HTTP;
 
-use Stringable;
-
 /**
  * Class Header
  *
  * Represents a single HTTP header.
- *
- * @see \CodeIgniter\HTTP\HeaderTest
  */
-class Header implements Stringable
+class Header
 {
     /**
      * The name of the header.
@@ -34,23 +28,15 @@ class Header implements Stringable
     /**
      * The value of the header. May have more than one
      * value. If so, will be an array of strings.
-     * E.g.,
-     *   [
-     *       'foo',
-     *       [
-     *           'bar' => 'fizz',
-     *       ],
-     *       'baz' => 'buzz',
-     *   ]
      *
-     * @var array<int|string, array<string, string>|string>|string
+     * @var array|string
      */
     protected $value;
 
     /**
      * Header constructor. name is mandatory, if a value is provided, it will be set.
      *
-     * @param array<int|string, array<string, string>|string>|string|null $value
+     * @param array|string|null $value
      */
     public function __construct(string $name, $value = null)
     {
@@ -68,9 +54,9 @@ class Header implements Stringable
 
     /**
      * Gets the raw value of the header. This may return either a string
-     * or an array, depending on whether the header has multiple values or not.
+     * of an array, depending on whether the header has multiple values or not.
      *
-     * @return array<int|string, array<string, string>|string>|string
+     * @return array|string
      */
     public function getValue()
     {
@@ -92,13 +78,13 @@ class Header implements Stringable
     /**
      * Sets the value of the header, overwriting any previous value(s).
      *
-     * @param array<int|string, array<string, string>|string>|string|null $value
+     * @param array|string|null $value
      *
      * @return $this
      */
     public function setValue($value = null)
     {
-        $this->value = is_array($value) ? $value : (string) $value;
+        $this->value = $value ?? '';
 
         return $this;
     }
@@ -107,7 +93,7 @@ class Header implements Stringable
      * Appends a value to the list of values for this header. If the
      * header is a single value string, it will be converted to an array.
      *
-     * @param array<string, string>|string|null $value
+     * @param array|string|null $value
      *
      * @return $this
      */
@@ -122,7 +108,7 @@ class Header implements Stringable
         }
 
         if (! in_array($value, $this->value, true)) {
-            $this->value[] = is_array($value) ? $value : (string) $value;
+            $this->value[] = $value;
         }
 
         return $this;
@@ -132,7 +118,7 @@ class Header implements Stringable
      * Prepends a value to the list of values for this header. If the
      * header is a single value string, it will be converted to an array.
      *
-     * @param array<string, string>|string|null $value
+     * @param array|string|null $value
      *
      * @return $this
      */

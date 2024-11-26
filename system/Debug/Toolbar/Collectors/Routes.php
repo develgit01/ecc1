@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -13,7 +11,6 @@ declare(strict_types=1);
 
 namespace CodeIgniter\Debug\Toolbar\Collectors;
 
-use CodeIgniter\Router\DefinedRouteCollector;
 use Config\Services;
 use ReflectionException;
 use ReflectionFunction;
@@ -51,31 +48,15 @@ class Routes extends BaseCollector
     /**
      * Returns the data of this collector to be formatted in the toolbar
      *
-     * @return array{
-     *      matchedRoute: array<array{
-     *          directory: string,
-     *          controller: string,
-     *          method: string,
-     *          paramCount: int,
-     *          truePCount: int,
-     *          params: list<array{
-     *              name: string,
-     *              value: mixed
-     *          }>
-     *      }>,
-     *      routes: list<array{
-     *          method: string,
-     *          route: string,
-     *          handler: string
-     *      }>
-     * }
-     *
      * @throws ReflectionException
      */
     public function display(): array
     {
         $rawRoutes = Services::routes(true);
         $router    = Services::router(null, null, true);
+
+        // Matched Route
+        $route = $router->getMatchedRoute();
 
         // Get our parameters
         // Closure routes
@@ -84,18 +65,10 @@ class Routes extends BaseCollector
         } else {
             try {
                 $method = new ReflectionMethod($router->controllerName(), $router->methodName());
-            } catch (ReflectionException) {
-                try {
-                    // If we're here, the method doesn't exist
-                    // and is likely calculated in _remap.
-                    $method = new ReflectionMethod($router->controllerName(), '_remap');
-                } catch (ReflectionException) {
-                    // If we're here, page cache is returned. The router is not executed.
-                    return [
-                        'matchedRoute' => [],
-                        'routes'       => [],
-                    ];
-                }
+            } catch (ReflectionException $e) {
+                // If we're here, the method doesn't exist
+                // and is likely calculated in _remap.
+                $method = new ReflectionMethod($router->controllerName(), '_remap');
             }
         }
 
@@ -127,18 +100,32 @@ class Routes extends BaseCollector
         ];
 
         // Defined Routes
-        $routes = [];
+        $routes  = [];
+        $methods = [
+            'get',
+            'head',
+            'post',
+            'patch',
+            'put',
+            'delete',
+            'options',
+            'trace',
+            'connect',
+            'cli',
+        ];
 
-        $definedRouteCollector = new DefinedRouteCollector($rawRoutes);
+        foreach ($methods as $method) {
+            $raw = $rawRoutes->getRoutes($method);
 
-        foreach ($definedRouteCollector->collect() as $route) {
-            // filter for strings, as callbacks aren't displayable
-            if ($route['handler'] !== '(Closure)') {
-                $routes[] = [
-                    'method'  => strtoupper($route['method']),
-                    'route'   => $route['route'],
-                    'handler' => $route['handler'],
-                ];
+            foreach ($raw as $route => $handler) {
+                // filter for strings, as callbacks aren't displayable
+                if (is_string($handler)) {
+                    $routes[] = [
+                        'method'  => strtoupper($method),
+                        'route'   => $route,
+                        'handler' => $handler,
+                    ];
+                }
             }
         }
 

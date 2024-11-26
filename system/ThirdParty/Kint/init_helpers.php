@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * The MIT License (MIT)
  *
@@ -32,7 +30,7 @@ if (!\function_exists('d')) {
     /**
      * Alias of Kint::dump().
      *
-     * @psalm-param mixed ...$args
+     * @param mixed ...$args
      *
      * @return int|string
      */
@@ -53,7 +51,7 @@ if (!\function_exists('s')) {
      *
      * If run in CLI colors are disabled
      *
-     * @psalm-param mixed ...$args
+     * @param mixed ...$args
      *
      * @return int|string
      */

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -20,8 +18,6 @@ use RuntimeException;
  *
  * Provides a simple way to measure the amount of time
  * that elapses between two points.
- *
- * @see \CodeIgniter\Debug\TimerTest
  */
 class Timer
 {
@@ -38,8 +34,8 @@ class Timer
      * Multiple calls can be made to this method so that several
      * execution points can be measured.
      *
-     * @param string     $name The name of this timer.
-     * @param float|null $time Allows user to provide time.
+     * @param string $name The name of this timer.
+     * @param float  $time Allows user to provide time.
      *
      * @return Timer
      */
@@ -129,23 +125,5 @@ class Timer
     public function has(string $name): bool
     {
         return array_key_exists(strtolower($name), $this->timers);
-    }
-
-    /**
-     * Executes callable and measures its time.
-     * Returns its return value if any.
-     *
-     * @param string            $name     The name of the timer
-     * @param callable(): mixed $callable callable to be executed
-     *
-     * @return mixed
-     */
-    public function record(string $name, callable $callable)
-    {
-        $this->start($name);
-        $returnValue = $callable();
-        $this->stop($name);
-
-        return $returnValue;
     }
 }

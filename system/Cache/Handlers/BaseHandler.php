@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -15,14 +13,11 @@ namespace CodeIgniter\Cache\Handlers;
 
 use Closure;
 use CodeIgniter\Cache\CacheInterface;
-use Config\Cache;
 use Exception;
 use InvalidArgumentException;
 
 /**
  * Base class for cache handling
- *
- * @see \CodeIgniter\Cache\Handlers\BaseHandlerTest
  */
 abstract class BaseHandler implements CacheInterface
 {
@@ -66,7 +61,7 @@ abstract class BaseHandler implements CacheInterface
             throw new InvalidArgumentException('Cache key cannot be empty.');
         }
 
-        $reserved = config(Cache::class)->reservedCharacters ?? self::RESERVED_CHARACTERS;
+        $reserved = config('Cache')->reservedCharacters ?? self::RESERVED_CHARACTERS;
         if ($reserved && strpbrk($key, $reserved) !== false) {
             throw new InvalidArgumentException('Cache key contains reserved characters ' . $reserved);
         }
@@ -78,11 +73,11 @@ abstract class BaseHandler implements CacheInterface
     /**
      * Get an item from the cache, or execute the given Closure and store the result.
      *
-     * @param string           $key      Cache item name
-     * @param int              $ttl      Time to live
-     * @param Closure(): mixed $callback Callback return value
+     * @param string  $key      Cache item name
+     * @param int     $ttl      Time to live
+     * @param Closure $callback Callback return value
      *
-     * @return array|bool|float|int|object|string|null
+     * @return mixed
      */
     public function remember(string $key, int $ttl, Closure $callback)
     {
@@ -101,8 +96,6 @@ abstract class BaseHandler implements CacheInterface
      * Deletes items from the cache store matching a given pattern.
      *
      * @param string $pattern Cache items glob-style pattern
-     *
-     * @return int|never
      *
      * @throws Exception
      */

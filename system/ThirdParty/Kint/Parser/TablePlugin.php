@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * The MIT License (MIT)
  *
@@ -30,25 +28,19 @@ namespace Kint\Parser;
 use Kint\Zval\Representation\Representation;
 use Kint\Zval\Value;
 
-// Note: Interaction with ArrayLimitPlugin:
-// Any array limited children will be shown in tables identically to
-// non-array-limited children since the table only shows that it is an array
-// and it's size anyway. Because ArrayLimitPlugin halts the parse on finding
-// a limit all other plugins including this one are stopped, so you cannot get
-// a tabular representation of an array that is longer than the limit.
-class TablePlugin extends AbstractPlugin
+class TablePlugin extends Plugin
 {
-    public function getTypes(): array
+    public function getTypes()
     {
         return ['array'];
     }
 
-    public function getTriggers(): int
+    public function getTriggers()
     {
         return Parser::TRIGGER_SUCCESS;
     }
 
-    public function parse(&$var, Value &$o, int $trigger): void
+    public function parse(&$var, Value &$o, $trigger)
     {
         if (empty($o->value->contents)) {
             return;

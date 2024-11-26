@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * The MIT License (MIT)
  *
@@ -30,23 +28,22 @@ namespace Kint\Parser;
 use Kint\Zval\Representation\SplFileInfoRepresentation;
 use Kint\Zval\Value;
 use SplFileInfo;
-use TypeError;
 
-class FsPathPlugin extends AbstractPlugin
+class FsPathPlugin extends Plugin
 {
     public static $blacklist = ['/', '.'];
 
-    public function getTypes(): array
+    public function getTypes()
     {
         return ['string'];
     }
 
-    public function getTriggers(): int
+    public function getTriggers()
     {
         return Parser::TRIGGER_SUCCESS;
     }
 
-    public function parse(&$var, Value &$o, int $trigger): void
+    public function parse(&$var, Value &$o, $trigger)
     {
         if (\strlen($var) > 2048) {
             return;
@@ -60,13 +57,8 @@ class FsPathPlugin extends AbstractPlugin
             return;
         }
 
-        try {
-            if (!@\file_exists($var)) {
-                return;
-            }
-        } catch (TypeError $e) {// @codeCoverageIgnore
-            // Only possible in PHP 7
-            return; // @codeCoverageIgnore
+        if (!@\file_exists($var)) {
+            return;
         }
 
         if (\in_array($var, self::$blacklist, true)) {

@@ -1,0 +1,217 @@
+CRITICAL - 2023-04-17 00:00:25 --> Undefined variable $id
+in APPPATH\Models\PersonaModel.php on line 47.
+ 1 APPPATH\Models\PersonaModel.php(47): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $id', 'APPPATH\\Models\\PersonaModel.php', 47)
+ 2 APPPATH\Controllers\Personas.php(24): App\Models\PersonaModel->getOne('1')
+ 3 SYSTEMPATH\CodeIgniter.php(898): App\Controllers\Personas->show('1')
+ 4 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Personas))
+ 5 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 19:26:19 --> Undefined variable $db
+in APPPATH\Models\PersonaModel.php on line 14.
+ 1 APPPATH\Models\PersonaModel.php(14): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $db', 'APPPATH\\Models\\PersonaModel.php', 14)
+ 2 APPPATH\Controllers\Personas.php(15): App\Models\PersonaModel->all()
+ 3 SYSTEMPATH\CodeIgniter.php(898): App\Controllers\Personas->index()
+ 4 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Personas))
+ 5 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 19:27:43 --> Call to undefined method App\Models\PersonaModel::getResult
+in SYSTEMPATH\Model.php on line 773.
+ 1 APPPATH\Models\PersonaModel.php(17): CodeIgniter\Model->__call('getResult', [])
+ 2 APPPATH\Controllers\Personas.php(15): App\Models\PersonaModel->all()
+ 3 SYSTEMPATH\CodeIgniter.php(898): App\Controllers\Personas->index()
+ 4 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Personas))
+ 5 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 19:28:47 --> Call to undefined method App\Models\PersonaModel::getResult
+in SYSTEMPATH\Model.php on line 773.
+ 1 APPPATH\Models\PersonaModel.php(17): CodeIgniter\Model->__call('getResult', [])
+ 2 APPPATH\Controllers\Personas.php(15): App\Models\PersonaModel->all()
+ 3 SYSTEMPATH\CodeIgniter.php(898): App\Controllers\Personas->index()
+ 4 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Personas))
+ 5 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 19:29:37 --> Call to undefined method App\Models\PersonaModel::getResult
+in SYSTEMPATH\Model.php on line 773.
+ 1 APPPATH\Models\PersonaModel.php(17): CodeIgniter\Model->__call('getResult', [])
+ 2 APPPATH\Controllers\Personas.php(15): App\Models\PersonaModel->all()
+ 3 SYSTEMPATH\CodeIgniter.php(898): App\Controllers\Personas->index()
+ 4 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Personas))
+ 5 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 19:29:53 --> Undefined variable $db
+in APPPATH\Models\PersonaModel.php on line 14.
+ 1 APPPATH\Models\PersonaModel.php(14): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $db', 'APPPATH\\Models\\PersonaModel.php', 14)
+ 2 APPPATH\Controllers\Personas.php(15): App\Models\PersonaModel->all()
+ 3 SYSTEMPATH\CodeIgniter.php(898): App\Controllers\Personas->index()
+ 4 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Personas))
+ 5 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 19:30:12 --> syntax error, unexpected variable "$db", expecting "function" or "const"
+in APPPATH\Models\PersonaModel.php on line 11.
+ 1 SYSTEMPATH\Autoloader\Autoloader.php(259): CodeIgniter\Autoloader\Autoloader->includeFile('APPPATH\\Models\\PersonaModel.php')
+ 2 SYSTEMPATH\Autoloader\Autoloader.php(237): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Models\\PersonaModel')
+ 3 APPPATH\Controllers\Personas.php(14): CodeIgniter\Autoloader\Autoloader->loadClass('App\\Models\\PersonaModel')
+ 4 SYSTEMPATH\CodeIgniter.php(898): App\Controllers\Personas->index()
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Personas))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 19:31:09 --> Call to undefined method App\Models\PersonaModel::resultArray
+in SYSTEMPATH\Model.php on line 773.
+ 1 APPPATH\Models\PersonaModel.php(17): CodeIgniter\Model->__call('resultArray', [])
+ 2 APPPATH\Controllers\Personas.php(15): App\Models\PersonaModel->all()
+ 3 SYSTEMPATH\CodeIgniter.php(898): App\Controllers\Personas->index()
+ 4 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Personas))
+ 5 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 19:32:19 --> Call to undefined method CodeIgniter\Database\MySQLi\Result::resultArray()
+in APPPATH\Models\PersonaModel.php on line 18.
+ 1 APPPATH\Controllers\Personas.php(15): App\Models\PersonaModel->all()
+ 2 SYSTEMPATH\CodeIgniter.php(898): App\Controllers\Personas->index()
+ 3 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Personas))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 19:37:50 --> Call to undefined method CodeIgniter\Database\MySQLi\Result::join()
+in APPPATH\Models\PersonaModel.php on line 17.
+ 1 APPPATH\Controllers\Personas.php(15): App\Models\PersonaModel->all()
+ 2 SYSTEMPATH\CodeIgniter.php(898): App\Controllers\Personas->index()
+ 3 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Personas))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 19:44:44 --> Call to undefined method App\Models\PersonaModel::getResult
+in SYSTEMPATH\Model.php on line 773.
+ 1 APPPATH\Models\PersonaModel.php(16): CodeIgniter\Model->__call('getResult', [])
+ 2 APPPATH\Controllers\Personas.php(15): App\Models\PersonaModel->all()
+ 3 SYSTEMPATH\CodeIgniter.php(898): App\Controllers\Personas->index()
+ 4 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Personas))
+ 5 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 19:44:56 --> syntax error, unexpected token "}", expecting ";"
+in APPPATH\Models\PersonaModel.php on line 17.
+ 1 SYSTEMPATH\Autoloader\Autoloader.php(259): CodeIgniter\Autoloader\Autoloader->includeFile('APPPATH\\Models\\PersonaModel.php')
+ 2 SYSTEMPATH\Autoloader\Autoloader.php(237): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Models\\PersonaModel')
+ 3 APPPATH\Controllers\Personas.php(14): CodeIgniter\Autoloader\Autoloader->loadClass('App\\Models\\PersonaModel')
+ 4 SYSTEMPATH\CodeIgniter.php(898): App\Controllers\Personas->index()
+ 5 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Personas))
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 20:47:49 --> Too few arguments to function CodeIgniter\Router\RouteCollection::post(), 1 passed in C:\htdocs\ci4-clone1\app\Config\Routes.php on line 40 and at least 2 expected
+in SYSTEMPATH\Router\RouteCollection.php on line 888.
+ 1 APPPATH\Config\Routes.php(40): CodeIgniter\Router\RouteCollection->post('Personas/pagination')
+ 2 SYSTEMPATH\CodeIgniter.php(760): require('APPPATH\\Config\\Routes.php')
+ 3 SYSTEMPATH\CodeIgniter.php(406): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 20:48:18 --> Too few arguments to function CodeIgniter\Router\RouteCollection::post(), 1 passed in C:\htdocs\ci4-clone1\app\Config\Routes.php on line 40 and at least 2 expected
+in SYSTEMPATH\Router\RouteCollection.php on line 888.
+ 1 APPPATH\Config\Routes.php(40): CodeIgniter\Router\RouteCollection->post('Personas/pagination')
+ 2 SYSTEMPATH\CodeIgniter.php(760): require('APPPATH\\Config\\Routes.php')
+ 3 SYSTEMPATH\CodeIgniter.php(406): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 20:48:36 --> Too few arguments to function CodeIgniter\Router\RouteCollection::post(), 1 passed in C:\htdocs\ci4-clone1\app\Config\Routes.php on line 40 and at least 2 expected
+in SYSTEMPATH\Router\RouteCollection.php on line 888.
+ 1 APPPATH\Config\Routes.php(40): CodeIgniter\Router\RouteCollection->post('Personas/pagination')
+ 2 SYSTEMPATH\CodeIgniter.php(760): require('APPPATH\\Config\\Routes.php')
+ 3 SYSTEMPATH\CodeIgniter.php(406): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 20:49:03 --> Too few arguments to function CodeIgniter\Router\RouteCollection::post(), 1 passed in C:\htdocs\ci4-clone1\app\Config\Routes.php on line 40 and at least 2 expected
+in SYSTEMPATH\Router\RouteCollection.php on line 888.
+ 1 APPPATH\Config\Routes.php(40): CodeIgniter\Router\RouteCollection->post('Personas/pagination')
+ 2 SYSTEMPATH\CodeIgniter.php(760): require('APPPATH\\Config\\Routes.php')
+ 3 SYSTEMPATH\CodeIgniter.php(406): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 20:49:12 --> Too few arguments to function CodeIgniter\Router\RouteCollection::post(), 1 passed in C:\htdocs\ci4-clone1\app\Config\Routes.php on line 40 and at least 2 expected
+in SYSTEMPATH\Router\RouteCollection.php on line 888.
+ 1 APPPATH\Config\Routes.php(40): CodeIgniter\Router\RouteCollection->post('Personas/pagination')
+ 2 SYSTEMPATH\CodeIgniter.php(760): require('APPPATH\\Config\\Routes.php')
+ 3 SYSTEMPATH\CodeIgniter.php(406): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 20:49:25 --> Too few arguments to function CodeIgniter\Router\RouteCollection::post(), 1 passed in C:\htdocs\ci4-clone1\app\Config\Routes.php on line 40 and at least 2 expected
+in SYSTEMPATH\Router\RouteCollection.php on line 888.
+ 1 APPPATH\Config\Routes.php(40): CodeIgniter\Router\RouteCollection->post('Personas/pagination')
+ 2 SYSTEMPATH\CodeIgniter.php(760): require('APPPATH\\Config\\Routes.php')
+ 3 SYSTEMPATH\CodeIgniter.php(406): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 20:50:09 --> Too few arguments to function CodeIgniter\Router\RouteCollection::post(), 1 passed in C:\htdocs\ci4-clone1\app\Config\Routes.php on line 40 and at least 2 expected
+in SYSTEMPATH\Router\RouteCollection.php on line 888.
+ 1 APPPATH\Config\Routes.php(40): CodeIgniter\Router\RouteCollection->post('Personas/pagination')
+ 2 SYSTEMPATH\CodeIgniter.php(760): require('APPPATH\\Config\\Routes.php')
+ 3 SYSTEMPATH\CodeIgniter.php(406): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 20:50:15 --> Too few arguments to function CodeIgniter\Router\RouteCollection::post(), 1 passed in C:\htdocs\ci4-clone1\app\Config\Routes.php on line 40 and at least 2 expected
+in SYSTEMPATH\Router\RouteCollection.php on line 888.
+ 1 APPPATH\Config\Routes.php(40): CodeIgniter\Router\RouteCollection->post('Personas/pagination')
+ 2 SYSTEMPATH\CodeIgniter.php(760): require('APPPATH\\Config\\Routes.php')
+ 3 SYSTEMPATH\CodeIgniter.php(406): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 20:50:21 --> Too few arguments to function CodeIgniter\Router\RouteCollection::post(), 1 passed in C:\htdocs\ci4-clone1\app\Config\Routes.php on line 40 and at least 2 expected
+in SYSTEMPATH\Router\RouteCollection.php on line 888.
+ 1 APPPATH\Config\Routes.php(40): CodeIgniter\Router\RouteCollection->post('Personas/pagination')
+ 2 SYSTEMPATH\CodeIgniter.php(760): require('APPPATH\\Config\\Routes.php')
+ 3 SYSTEMPATH\CodeIgniter.php(406): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 20:51:13 --> Too few arguments to function CodeIgniter\Router\RouteCollection::post(), 1 passed in C:\htdocs\ci4-clone1\app\Config\Routes.php on line 40 and at least 2 expected
+in SYSTEMPATH\Router\RouteCollection.php on line 888.
+ 1 APPPATH\Config\Routes.php(40): CodeIgniter\Router\RouteCollection->post('Personas/pagination')
+ 2 SYSTEMPATH\CodeIgniter.php(760): require('APPPATH\\Config\\Routes.php')
+ 3 SYSTEMPATH\CodeIgniter.php(406): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 20:51:56 --> Too few arguments to function CodeIgniter\Router\RouteCollection::get(), 1 passed in C:\htdocs\ci4-clone1\app\Config\Routes.php on line 40 and at least 2 expected
+in SYSTEMPATH\Router\RouteCollection.php on line 876.
+ 1 APPPATH\Config\Routes.php(40): CodeIgniter\Router\RouteCollection->get('Personas/pagination')
+ 2 SYSTEMPATH\CodeIgniter.php(760): require('APPPATH\\Config\\Routes.php')
+ 3 SYSTEMPATH\CodeIgniter.php(406): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 20:52:01 --> Too few arguments to function CodeIgniter\Router\RouteCollection::get(), 1 passed in C:\htdocs\ci4-clone1\app\Config\Routes.php on line 40 and at least 2 expected
+in SYSTEMPATH\Router\RouteCollection.php on line 876.
+ 1 APPPATH\Config\Routes.php(40): CodeIgniter\Router\RouteCollection->get('Personas/pagination')
+ 2 SYSTEMPATH\CodeIgniter.php(760): require('APPPATH\\Config\\Routes.php')
+ 3 SYSTEMPATH\CodeIgniter.php(406): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 20:52:04 --> Too few arguments to function CodeIgniter\Router\RouteCollection::get(), 1 passed in C:\htdocs\ci4-clone1\app\Config\Routes.php on line 40 and at least 2 expected
+in SYSTEMPATH\Router\RouteCollection.php on line 876.
+ 1 APPPATH\Config\Routes.php(40): CodeIgniter\Router\RouteCollection->get('Personas/pagination')
+ 2 SYSTEMPATH\CodeIgniter.php(760): require('APPPATH\\Config\\Routes.php')
+ 3 SYSTEMPATH\CodeIgniter.php(406): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 20:52:10 --> Too few arguments to function CodeIgniter\Router\RouteCollection::get(), 1 passed in C:\htdocs\ci4-clone1\app\Config\Routes.php on line 40 and at least 2 expected
+in SYSTEMPATH\Router\RouteCollection.php on line 876.
+ 1 APPPATH\Config\Routes.php(40): CodeIgniter\Router\RouteCollection->get('Personas/pagination')
+ 2 SYSTEMPATH\CodeIgniter.php(760): require('APPPATH\\Config\\Routes.php')
+ 3 SYSTEMPATH\CodeIgniter.php(406): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 20:56:19 --> Undefined variable $data
+in APPPATH\Controllers\Personas.php on line 28.
+ 1 APPPATH\Controllers\Personas.php(28): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $data', 'APPPATH\\Controllers\\Personas.php', 28)
+ 2 SYSTEMPATH\CodeIgniter.php(898): App\Controllers\Personas->pagination()
+ 3 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Personas))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 21:04:59 --> Undefined property: stdClass::$start
+in APPPATH\Controllers\Personas.php on line 27.
+ 1 APPPATH\Controllers\Personas.php(27): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$start', 'APPPATH\\Controllers\\Personas.php', 27)
+ 2 SYSTEMPATH\CodeIgniter.php(898): App\Controllers\Personas->pagination()
+ 3 SYSTEMPATH\CodeIgniter.php(457): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Personas))
+ 4 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-04-17 21:34:51 --> syntax error, unexpected token ":"
+in APPPATH\Controllers\Personas.php on line 27.
+ 1 SYSTEMPATH\Autoloader\Autoloader.php(259): CodeIgniter\Autoloader\Autoloader->includeFile('APPPATH\\Controllers\\Personas.php')
+ 2 SYSTEMPATH\Autoloader\Autoloader.php(237): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers\\Personas')
+ 3 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers\\Personas')
+ 4 SYSTEMPATH\CodeIgniter.php(848): class_exists('\\App\\Controllers\\Personas', true)
+ 5 SYSTEMPATH\CodeIgniter.php(444): CodeIgniter\CodeIgniter->startController()
+ 6 SYSTEMPATH\CodeIgniter.php(340): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(67): CodeIgniter\CodeIgniter->run()

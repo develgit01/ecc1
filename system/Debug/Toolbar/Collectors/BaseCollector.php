@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -139,8 +137,6 @@ class BaseCollector
      *          'bar' => 'baz'
      *      ],
      *  ];
-     *
-     * @return array|null
      */
     public function getVarData()
     {
@@ -187,8 +183,6 @@ class BaseCollector
 
     /**
      * Gets the "badge" value for the button.
-     *
-     * @return int|null
      */
     public function getBadgeValue()
     {

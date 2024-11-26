@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -23,14 +21,13 @@ use CodeIgniter\HTTP\Exceptions\HTTPException;
  * server wants.
  *
  * @see http://tools.ietf.org/html/rfc7231#section-5.3
- * @see \CodeIgniter\HTTP\NegotiateTest
  */
 class Negotiate
 {
     /**
      * Request
      *
-     * @var IncomingRequest
+     * @var IncomingRequest|RequestInterface
      */
     protected $request;
 
@@ -40,8 +37,6 @@ class Negotiate
     public function __construct(?RequestInterface $request = null)
     {
         if ($request !== null) {
-            assert($request instanceof IncomingRequest);
-
             $this->request = $request;
         }
     }
@@ -53,8 +48,6 @@ class Negotiate
      */
     public function setRequest(RequestInterface $request)
     {
-        assert($request instanceof IncomingRequest);
-
         $this->request = $request;
 
         return $this;
@@ -86,16 +79,11 @@ class Negotiate
      */
     public function charset(array $supported): string
     {
-        $match = $this->getBestMatch(
-            $supported,
-            $this->request->getHeaderLine('accept-charset'),
-            false,
-            true
-        );
+        $match = $this->getBestMatch($supported, $this->request->getHeaderLine('accept-charset'), false, true);
 
         // If no charset is shown as a match, ignore the directive
         // as allowed by the RFC, and tell it a default value.
-        if ($match === '') {
+        if (empty($match)) {
             return 'utf-8';
         }
 
@@ -130,9 +118,9 @@ class Negotiate
         return $this->getBestMatch($supported, $this->request->getHeaderLine('accept-language'), false, false, true);
     }
 
-    // --------------------------------------------------------------------
+    //--------------------------------------------------------------------
     // Utility Methods
-    // --------------------------------------------------------------------
+    //--------------------------------------------------------------------
 
     /**
      * Does the grunt work of comparing any of the app-supported values
@@ -149,18 +137,13 @@ class Negotiate
      *
      * @return string Best match
      */
-    protected function getBestMatch(
-        array $supported,
-        ?string $header = null,
-        bool $enforceTypes = false,
-        bool $strictMatch = false,
-        bool $matchLocales = false
-    ): string {
-        if ($supported === []) {
+    protected function getBestMatch(array $supported, ?string $header = null, bool $enforceTypes = false, bool $strictMatch = false, bool $matchLocales = false): string
+    {
+        if (empty($supported)) {
             throw HTTPException::forEmptySupportedNegotiations();
         }
 
-        if ($header === null || $header === '') {
+        if (empty($header)) {
             return $strictMatch ? '' : $supported[0];
         }
 
@@ -276,7 +259,7 @@ class Negotiate
     protected function match(array $acceptable, string $supported, bool $enforceTypes = false, $matchLocales = false): bool
     {
         $supported = $this->parseHeader($supported);
-        if (count($supported) === 1) {
+        if (is_array($supported) && count($supported) === 1) {
             $supported = $supported[0];
         }
 

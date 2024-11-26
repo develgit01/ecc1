@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * This file is part of CodeIgniter 4 framework.
  *
@@ -86,38 +84,23 @@ class Forge extends BaseForge
     protected $dropConstraintStr = 'ALTER TABLE %s DROP CONSTRAINT %s';
 
     /**
-     * Foreign Key Allowed Actions
-     *
-     * @var array
-     */
-    protected $fkAllowActions = ['CASCADE', 'SET NULL', 'NO ACTION'];
-
-    /**
      * ALTER TABLE
      *
-     * @param string       $alterType       ALTER type
-     * @param string       $table           Table name
-     * @param array|string $processedFields Processed column definitions
-     *                                      or column names to DROP
+     * @param string $alterType ALTER type
+     * @param string $table     Table name
+     * @param mixed  $field     Column definition
      *
-     * @return         list<string>|string                            SQL string
-     * @phpstan-return ($alterType is 'DROP' ? string : list<string>)
+     * @return string|string[]
      */
-    protected function _alterTable(string $alterType, string $table, $processedFields)
+    protected function _alterTable(string $alterType, string $table, $field)
     {
         $sql = 'ALTER TABLE ' . $this->db->escapeIdentifiers($table);
 
         if ($alterType === 'DROP') {
-            $columnNamesToDrop = $processedFields;
-
-            $fields = array_map(
-                fn ($field) => $this->db->escapeIdentifiers(trim($field)),
-                is_string($columnNamesToDrop) ? explode(',', $columnNamesToDrop) : $columnNamesToDrop
-            );
+            $fields = array_map(fn ($field) => $this->db->escapeIdentifiers(trim($field)), is_string($field) ? explode(',', $field) : $field);
 
             return $sql . ' DROP (' . implode(',', $fields) . ') CASCADE CONSTRAINT INVALIDATE';
         }
-
         if ($alterType === 'CHANGE') {
             $alterType = 'MODIFY';
         }
@@ -125,50 +108,43 @@ class Forge extends BaseForge
         $nullableMap = array_column($this->db->getFieldData($table), 'nullable', 'name');
         $sqls        = [];
 
-        for ($i = 0, $c = count($processedFields); $i < $c; $i++) {
+        for ($i = 0, $c = count($field); $i < $c; $i++) {
             if ($alterType === 'MODIFY') {
                 // If a null constraint is added to a column with a null constraint,
                 // ORA-01451 will occur,
                 // so add null constraint is used only when it is different from the current null constraint.
-                // If a not null constraint is added to a column with a not null constraint,
-                // ORA-01442 will occur.
-                $wantToAddNull   = ! str_contains($processedFields[$i]['null'], ' NOT');
-                $currentNullable = $nullableMap[$processedFields[$i]['name']];
+                $isWantToAddNull    = strpos($field[$i]['null'], ' NOT') === false;
+                $currentNullAddable = $nullableMap[$field[$i]['name']];
 
-                if ($wantToAddNull === true && $currentNullable === true) {
-                    $processedFields[$i]['null'] = '';
-                } elseif ($processedFields[$i]['null'] === '' && $currentNullable === false) {
-                    // Nullable by default
-                    $processedFields[$i]['null'] = ' NULL';
-                } elseif ($wantToAddNull === false && $currentNullable === false) {
-                    $processedFields[$i]['null'] = '';
+                if ($isWantToAddNull === $currentNullAddable) {
+                    $field[$i]['null'] = '';
                 }
             }
 
-            if ($processedFields[$i]['_literal'] !== false) {
-                $processedFields[$i] = "\n\t" . $processedFields[$i]['_literal'];
+            if ($field[$i]['_literal'] !== false) {
+                $field[$i] = "\n\t" . $field[$i]['_literal'];
             } else {
-                $processedFields[$i]['_literal'] = "\n\t" . $this->_processColumn($processedFields[$i]);
+                $field[$i]['_literal'] = "\n\t" . $this->_processColumn($field[$i]);
 
-                if (! empty($processedFields[$i]['comment'])) {
+                if (! empty($field[$i]['comment'])) {
                     $sqls[] = 'COMMENT ON COLUMN '
-                        . $this->db->escapeIdentifiers($table) . '.' . $this->db->escapeIdentifiers($processedFields[$i]['name'])
-                        . ' IS ' . $processedFields[$i]['comment'];
+                        . $this->db->escapeIdentifiers($table) . '.' . $this->db->escapeIdentifiers($field[$i]['name'])
+                        . ' IS ' . $field[$i]['comment'];
                 }
 
-                if ($alterType === 'MODIFY' && ! empty($processedFields[$i]['new_name'])) {
-                    $sqls[] = $sql . ' RENAME COLUMN ' . $this->db->escapeIdentifiers($processedFields[$i]['name'])
-                        . ' TO ' . $this->db->escapeIdentifiers($processedFields[$i]['new_name']);
+                if ($alterType === 'MODIFY' && ! empty($field[$i]['new_name'])) {
+                    $sqls[] = $sql . ' RENAME COLUMN ' . $this->db->escapeIdentifiers($field[$i]['name'])
+                        . ' TO ' . $this->db->escapeIdentifiers($field[$i]['new_name']);
                 }
 
-                $processedFields[$i] = "\n\t" . $processedFields[$i]['_literal'];
+                $field[$i] = "\n\t" . $field[$i]['_literal'];
             }
         }
 
         $sql .= ' ' . $alterType . ' ';
-        $sql .= count($processedFields) === 1
-                ? $processedFields[0]
-                : '(' . implode(',', $processedFields) . ')';
+        $sql .= count($field) === 1
+                ? $field[0]
+                : '(' . implode(',', $field) . ')';
 
         // RENAME COLUMN must be executed after MODIFY
         array_unshift($sqls, $sql);
@@ -187,33 +163,33 @@ class Forge extends BaseForge
             && stripos($field['type'], 'NUMBER') !== false
             && version_compare($this->db->getVersion(), '12.1', '>=')
         ) {
-            $field['auto_increment'] = ' GENERATED BY DEFAULT ON NULL AS IDENTITY';
+            $field['auto_increment'] = ' GENERATED BY DEFAULT AS IDENTITY';
         }
     }
 
     /**
      * Process column
      */
-    protected function _processColumn(array $processedField): string
+    protected function _processColumn(array $field): string
     {
         $constraint = '';
-        // @todo: can't cover multi pattern when set type.
-        if ($processedField['type'] === 'VARCHAR2' && str_starts_with($processedField['length'], "('")) {
-            $constraint = ' CHECK(' . $this->db->escapeIdentifiers($processedField['name'])
-                . ' IN ' . $processedField['length'] . ')';
+        // @todo: can’t cover multi pattern when set type.
+        if ($field['type'] === 'VARCHAR2' && strpos($field['length'], "('") === 0) {
+            $constraint = ' CHECK(' . $this->db->escapeIdentifiers($field['name'])
+                . ' IN ' . $field['length'] . ')';
 
-            $processedField['length'] = '(' . max(array_map(mb_strlen(...), explode("','", mb_substr($processedField['length'], 2, -2)))) . ')' . $constraint;
-        } elseif (isset($this->primaryKeys['fields']) && count($this->primaryKeys['fields']) === 1 && $processedField['name'] === $this->primaryKeys['fields'][0]) {
-            $processedField['unique'] = '';
+            $field['length'] = '(' . max(array_map('mb_strlen', explode("','", mb_substr($field['length'], 2, -2)))) . ')' . $constraint;
+        } elseif (count($this->primaryKeys) === 1 && $field['name'] === $this->primaryKeys[0]) {
+            $field['unique'] = '';
         }
 
-        return $this->db->escapeIdentifiers($processedField['name'])
-           . ' ' . $processedField['type'] . $processedField['length']
-           . $processedField['unsigned']
-           . $processedField['default']
-           . $processedField['auto_increment']
-           . $processedField['null']
-           . $processedField['unique'];
+        return $this->db->escapeIdentifiers($field['name'])
+           . ' ' . $field['type'] . $field['length']
+           . $field['unsigned']
+           . $field['default']
+           . $field['auto_increment']
+           . $field['null']
+           . $field['unique'];
     }
 
     /**
@@ -228,24 +204,19 @@ class Forge extends BaseForge
         switch (strtoupper($attributes['TYPE'])) {
             case 'TINYINT':
                 $attributes['CONSTRAINT'] ??= 3;
-
                 // no break
             case 'SMALLINT':
                 $attributes['CONSTRAINT'] ??= 5;
-
                 // no break
             case 'MEDIUMINT':
                 $attributes['CONSTRAINT'] ??= 7;
-
                 // no break
             case 'INT':
             case 'INTEGER':
                 $attributes['CONSTRAINT'] ??= 11;
-
                 // no break
             case 'BIGINT':
                 $attributes['CONSTRAINT'] ??= 19;
-
                 // no break
             case 'NUMERIC':
                 $attributes['TYPE'] = 'NUMBER';
@@ -256,6 +227,7 @@ class Forge extends BaseForge
                 $attributes['TYPE']       = 'NUMBER';
                 $attributes['CONSTRAINT'] = 1;
                 $attributes['UNSIGNED']   = true;
+                $attributes['NULL']       = false;
 
                 return;
 
@@ -275,7 +247,6 @@ class Forge extends BaseForge
             case 'ENUM':
             case 'VARCHAR':
                 $attributes['CONSTRAINT'] ??= 255;
-
                 // no break
             case 'TEXT':
             case 'MEDIUMTEXT':
@@ -302,13 +273,31 @@ class Forge extends BaseForge
         return $sql;
     }
 
-    /**
-     * Constructs sql to check if key is a constraint.
-     */
-    protected function _dropKeyAsConstraint(string $table, string $constraintName): string
+    protected function _processForeignKeys(string $table): string
     {
-        return "SELECT constraint_name FROM all_constraints WHERE table_name = '"
-            . trim($table, '"') . "' AND index_name = '"
-            . trim($constraintName, '"') . "'";
+        $sql = '';
+
+        $allowActions = [
+            'CASCADE',
+            'SET NULL',
+            'NO ACTION',
+        ];
+
+        foreach ($this->foreignKeys as $fkey) {
+            $nameIndex            = $table . '_' . implode('_', $fkey['field']) . '_fk';
+            $nameIndexFilled      = $this->db->escapeIdentifiers($nameIndex);
+            $foreignKeyFilled     = implode(', ', $this->db->escapeIdentifiers($fkey['field']));
+            $referenceTableFilled = $this->db->escapeIdentifiers($this->db->DBPrefix . $fkey['referenceTable']);
+            $referenceFieldFilled = implode(', ', $this->db->escapeIdentifiers($fkey['referenceField']));
+
+            $formatSql = ",\n\tCONSTRAINT %s FOREIGN KEY (%s) REFERENCES %s(%s)";
+            $sql .= sprintf($formatSql, $nameIndexFilled, $foreignKeyFilled, $referenceTableFilled, $referenceFieldFilled);
+
+            if ($fkey['onDelete'] !== false && in_array($fkey['onDelete'], $allowActions, true)) {
+                $sql .= ' ON DELETE ' . $fkey['onDelete'];
+            }
+        }
+
+        return $sql;
     }
 }
