@@ -1,23 +1,17 @@
-# Use the official PHP image as the base image
-FROM php:7.4-apache
+# Usar una imagen base de Python
+FROM python:3.9-slim
 
-# Copy the application files into the container
-COPY . /var/www/html
+# Establecer el directorio de trabajo en el contenedor
+WORKDIR /app
 
-# Set the working directory in the container
-WORKDIR /var/www/html
+# Copiar el script de Python al contenedor
+COPY show_table_data.py .
 
-# Install necessary PHP extensions
-RUN apt-get update && apt-get install -y \
-    libicu-dev \
-    libzip-dev \
-    && docker-php-ext-install \
-    intl \
-    zip \
-    && a2enmod rewrite
+# Copiar la base de datos SQLite al contenedor
+COPY database.db .
 
-# Expose port 80
-EXPOSE 80
+# Instalar las dependencias necesarias (si las hay)
+# RUN pip install -r requirements.txt
 
-# Define the entry point for the container
-CMD ["apache2-foreground"]
+# Ejecutar el script de Python
+CMD ["python", "show_table_data.py"]
