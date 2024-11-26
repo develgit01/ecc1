@@ -1,5 +1,7 @@
 # Imagen base con PHP 8.1 y Apache
 FROM php:8.1-apache
+USER root
+RUN chmod 755 /var/lib/mysql
 
 # Actualización del sistema e instalación de dependencias necesarias para PHP
 RUN apt-get update && apt-get install -y \
