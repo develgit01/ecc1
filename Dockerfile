@@ -1,21 +1,31 @@
 # Imagen base con PHP 8.1 y Apache
 FROM php:8.1-apache
-USER root
-RUN chmod 755 /var/www/html
 
-# Actualización del sistema e instalación de dependencias necesarias para PHP
+# Actualización del sistema e instalación de extensiones necesarias
 RUN apt-get update && apt-get install -y \
     libonig-dev \
     libzip-dev \
     unzip \
     && docker-php-ext-install pdo pdo_mysql mysqli
 
-# Habilitar mod_rewrite de Apache
+# Habilitar mod_rewrite de Apache para soporte de .htaccess
 RUN a2enmod rewrite
 
-# Copiar archivo php.ini personalizado (si es necesario)
-# Puedes descomentar y configurar un php.ini si lo necesitas.
-# COPY php.ini /usr/local/etc/php/
+# Configuración de permisos para Apache
+# Asegura que los archivos en /var/www/html sean accesibles por Apache
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
 
-# Configurar el directorio de trabajo
+# Establecer permisos por defecto para el directorio de trabajo
 WORKDIR /var/www/html
+
+# Copiar los archivos de la aplicación al contenedor
+COPY ./src /var/www/html
+
+# Configuración personalizada de Apache para permitir acceso
+RUN echo "<Directory /var/www/html>
+    Options Indexes FollowSymLinks
+    AllowOverride All
+    Require all granted
+</Directory>" > /etc/apache2/conf-available/permissions.conf \
+    && a2enconf permissions
