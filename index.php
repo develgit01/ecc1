@@ -2,7 +2,7 @@
 
 //require 'public/index.php';
 
-$dsn = 'mysql:host=db;dbname=my_database';
+$dsn = 'pdo:host=db;dbname=my_database';
 $username = 'user';
 $password = 'user_password';
 
