@@ -5,11 +5,11 @@ services:
     build: .
     container_name: php-apache
     ports:
-      - "8080:80"
+      - "8080:80"  # Acceso desde el navegador
     volumes:
-      - ./src:/var/www/html # Monta tu código fuente
+      - ./src:/var/www/html  # Código fuente PHP montado
     depends_on:
-      - db
+      - db  # Asegura que el contenedor db esté listo antes de levantar PHP
 
   db:
     image: mysql:5.7
@@ -23,7 +23,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     ports:
-      - "3306:3306"
+      - "3306:3306"  # Puerto para conexiones MySQL desde el host
 
 volumes:
   db_data:
