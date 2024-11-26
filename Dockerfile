@@ -1,18 +1,9 @@
+FROM php:8.0-apache
 
-FROM php:8.2-apache
+# Instalar dependencias necesarias
+RUN apt-get update && apt-get install -y \
+    libicu-dev \
+    && docker-php-ext-install intl
 
-RUN apt-get update && apt-get install -y php-imagick php-mysqli
-
-# Copy your application code
-COPY api /var/www/html
-
-# Run your application (optional)
-CMD ["apache2-foreground"]
-# Verificar si se debe reiniciar
-ENV SHOULD_RESTART=false
-
-# Script para reiniciar httpd si es necesario
-COPY restart.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/restart.sh
-
-CMD ["sh", "-c", "if [ \"$SHOULD_RESTART\" = \"true\" ]; then /usr/local/bin/restart.sh; fi && apache2-foreground"]
+COPY . /var/www/html/
+RUN chown -R www-data:www-data /var/www/html && a2enmod rewrite
