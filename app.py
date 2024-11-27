@@ -6,11 +6,17 @@ import os
 app = Flask(__name__)
 
 # Configuración de la conexión a MySQL usando variables de entorno
+# db_config = {
+#     'user': os.getenv('DB_USER'),
+#     'password': os.getenv('DB_PASSWORD'),
+#     'host': os.getenv('DB_HOST'),
+#     'database': os.getenv('DB_NAME')
+# }
 db_config = {
-    'user': os.getenv('DB_USER'),
-    'password': os.getenv('DB_PASSWORD'),
-    'host': os.getenv('DB_HOST'),
-    'database': os.getenv('DB_NAME')
+    'user': "myuser",
+    'password': "rootpassword",
+    'host': "mydatabase",
+    'database': "mypassword"
 }
 
 def get_db_connection():
