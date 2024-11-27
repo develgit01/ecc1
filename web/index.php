@@ -11,31 +11,38 @@
           . '.</php';
     ?>
     <hr>
-    <?php
+<?php
 
-class ODBC{
-  //Conexion a la base de datos
-  public static function connection(){  
+class ODBC {
+  // Conexión a la base de datos
+  public static function connection() {  
     $host = 'ep-restless-bird-a2xx2dqs.eu-central-1.pg.koyeb.app';
+    $port = '5432';
     $dbname = 'koyebdb';
     $username = 'koyeb-adm';
     $password = 'JIncLkX2yp9E';
-    try{
-      $pdo = new PDO("mysql:host=".$host.";dbname=".$dbname.";charset=utf8",$username,$password);
-    return $pdo;
-   }catch(PDOException $e){
-      echo $e->getMessage();
-   }
+    try {
+      // Cambiar el DSN para PostgreSQL
+      $pdo = new PDO("pgsql:host=".$host.";port=".$port.";dbname=".$dbname, $username, $password);
+      // Establecer atributos de PDO
+      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      return $pdo;
+    } catch (PDOException $e) {
+      // Imprimir mensaje de error en caso de fallo
+      echo "Error de conexión: " . $e->getMessage();
+      return null;
+    }
+  }
 }
 
-$dbconex = new ODBC;
-if($dbconex->conex()){
-  echo "Conectado";
-}else{
-  echo "Revise la conexión de su Base de datos.";
+// Probar la conexión
+$dbconex = ODBC::connection();
+if ($dbconex) {
+  echo "Conectado a PostgreSQL exitosamente.";
+} else {
+  echo "Revise la conexión de su base de datos.";
 }
 
-}
 ?>
   </body>
 </html>
