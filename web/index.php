@@ -39,6 +39,20 @@ class ODBC {
 $dbconex = ODBC::connection();
 if ($dbconex) {
   echo "Conectado a PostgreSQL exitosamente.";
+  
+  try {
+      // Obtener los usuarios
+      $stmt = $dbconex->query("SELECT * FROM users");
+      $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+      // Mostrar resultados
+      echo "<pre>";
+      print_r($users);
+      echo "</pre>";
+
+  } catch (PDOException $e) {
+      echo "Error al consultar usuarios: " . $e->getMessage();
+  }
 } else {
   echo "Revise la conexión de su base de datos.";
 }
