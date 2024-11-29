@@ -1,6 +1,10 @@
 <?php
 namespace App\System;
 
+// DATABASE_HOST=ep-restless-bird-a2xx2dqs.eu-central-1.pg.koyeb.app
+// DATABASE_USER=koyeb-adm
+// DATABASE_PASSWORD=JIncLkX2yp9E
+// DATABASE_NAME=koyebdb
 
 class Database {
     private static $instance = null;
@@ -8,10 +12,10 @@ class Database {
     private $db;
 
     private function __construct() {
-        $host = "";
-        $db = "";
-        $user = "";
-        $pass = "";
+        $host = "ep-restless-bird-a2xx2dqs.eu-central-1.pg.koyeb.app";
+        $db = "koyebdb";
+        $user = "koyeb-adm";
+        $pass = "JIncLkX2yp9E";
         $charset = 'utf8mb4';
 
         $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
