@@ -22,8 +22,8 @@ COPY . .
 # Copiar el archivo de configuración de Nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Exponer el puerto 9000 para PHP-FPM
-EXPOSE 9000
+# Exponer el puerto 8000 para Nginx
+EXPOSE 8000
 
 # Comando para iniciar PHP-FPM
 CMD ["php-fpm"]
