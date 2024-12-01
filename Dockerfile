@@ -8,7 +8,7 @@ RUN docker-php-ext-install pdo pdo_mysql
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Establecer el directorio de trabajo
-WORKDIR /var/www/html
+WORKDIR /workspace
 
 # Copiar el archivo composer.json y composer.lock
 COPY composer.json composer.lock ./
