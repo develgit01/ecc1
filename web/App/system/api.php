@@ -4,8 +4,6 @@ use App\Controllers\ResourceController;
 $request = $_SERVER['REQUEST_URI'];
 $method = $_SERVER['REQUEST_METHOD'];
 
-print_r($request, $method);
-
 $segments = explode('/', trim($request, '/'));
 $tableName = $segments[2] ?? null;
 $id = $segments[3] ?? null;
