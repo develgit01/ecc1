@@ -22,5 +22,5 @@ RUN sed -i 's/Listen 80/Listen ${PORT}/' /etc/apache2/ports.conf
 # Habilitar el módulo rewrite de Apache si no está habilitado
 RUN a2enmod rewrite
 
-# Reiniciar Apache para aplicar los cambios
-RUN service apache2 restart
+# Asegurarse de que Apache se inicie automáticamente
+CMD ["apache2-foreground"]
