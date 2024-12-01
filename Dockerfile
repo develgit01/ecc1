@@ -25,5 +25,5 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Exponer el puerto 8000 para Nginx
 EXPOSE 8000
 
-# Comando para iniciar PHP-FPM
-CMD ["php-fpm"]
+# Comando para iniciar PHP-FPM y Nginx
+CMD ["sh", "-c", "php-fpm & nginx -g 'daemon off;'"]

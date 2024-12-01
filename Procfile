@@ -1,2 +1,1 @@
-web: nginx -g 'daemon off;'
-worker: php-fpm
+web: sh -c "php-fpm & nginx -g 'daemon off;'"
