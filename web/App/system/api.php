@@ -30,7 +30,7 @@ if ($tableName) {
     }
 } else {
     http_response_code(404);
-    $response = json_encode(['message' => 'Not Found 1']);
+    $response = json_encode(['message' => 'Request: '.$request. ', Method: '. $method]);
 }
 
 echo json_encode($response);
