@@ -1,1 +1,1 @@
-web: heroku-php-nginx web/
+web: php-apache web/
