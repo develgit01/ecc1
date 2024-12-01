@@ -5,6 +5,9 @@ $request = $_SERVER['REQUEST_URI'];
 $method = $_SERVER['REQUEST_METHOD'];
 
 $segments = explode('/', trim($request, '/'));
+
+print_r($segments);
+
 $tableName = $segments[2] ?? null;
 $id = $segments[3] ?? null;
 
