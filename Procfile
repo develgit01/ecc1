@@ -1,1 +1,1 @@
-web: sh -c "php-fpm & nginx -g 'daemon off;'"
+web: heroku-php-apache2 web/
