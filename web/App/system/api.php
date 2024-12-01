@@ -8,8 +8,8 @@ $segments = explode('/', trim($request, '/'));
 
 print_r($segments);
 
-$tableName = $segments[2] ?? null;
-$id = $segments[3] ?? null;
+$tableName = $segments[0] ?? null;
+$id = $segments[1] ?? null;
 
 $response = false;
 
