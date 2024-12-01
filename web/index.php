@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Example PHP page</title>
-  </head>
-  <body>
-    <?php
-      echo '<h1>Hello world!</h1>';
-      echo '<p>This page uses PHP version '
-          . phpversion()
-          . '.</php';
-    ?>
-  </body>
-</html>
+<?php
+
+$request = $_SERVER['REQUEST_URI'];
+$method = $_SERVER['REQUEST_METHOD'];
+
+print_r($request, $method);
+
+require './App/system/autoload.php';
+require './App/system/api.php';
