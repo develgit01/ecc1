@@ -8,7 +8,7 @@ WORKDIR /var/www/html
 COPY web .
 
 # Copiar el archivo .htaccess al directorio web
-COPY .htaccess .
+# COPY .htaccess .
 
 # Establecer la variable de entorno para el puerto
 ENV PORT=8000

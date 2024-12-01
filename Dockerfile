@@ -1,26 +1,26 @@
-# Usar la imagen base de PHP con Apache
-FROM php:apache
+# Usar una imagen base de PHP con Apache
+FROM php:8.0-apache
+
+# Instalar extensiones necesarias
+RUN docker-php-ext-install pdo pdo_mysql
+
+# Instalar Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Establecer el directorio de trabajo
 WORKDIR /var/www/html
 
-# Copiar el contenido del directorio web al contenedor
-COPY web .
+# Copiar el archivo composer.json y composer.lock
+COPY composer.json composer.lock ./
 
-# Copiar el archivo .htaccess al directorio web
-COPY .htaccess .
+# Instalar dependencias de Composer
+RUN composer install
 
-# Establecer la variable de entorno para el puerto
-ENV PORT=8000
+# Copiar el resto del código fuente
+COPY . .
 
-# Exponer el puerto configurado
-EXPOSE ${PORT}
+# Exponer el puerto 80 para Apache
+EXPOSE 80
 
-# Modificar el archivo de configuración de puertos de Apache para escuchar en el puerto configurado
-RUN sed -i 's/Listen 80/Listen ${PORT}/' /etc/apache2/ports.conf
-
-# Habilitar el módulo rewrite de Apache si no está habilitado
-RUN a2enmod rewrite
-
-# Asegurarse de que Apache se inicie automáticamente
+# Comando para iniciar Apache
 CMD ["apache2-foreground"]
