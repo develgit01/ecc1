@@ -1,5 +1,4 @@
 <?php
-namespace System;
 
 // DATABASE_HOST=ep-restless-bird-a2xx2dqs.eu-central-1.pg.koyeb.app
 // DATABASE_USER=koyeb-adm

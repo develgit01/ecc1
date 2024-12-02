@@ -1,8 +1,6 @@
 <?php
-namespace Models;
 
-use System\Database;
-use PDO;
+require "database.php";
 
 class ResourceModel {
     private $tableName;

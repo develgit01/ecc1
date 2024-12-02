@@ -1,7 +1,6 @@
 <?php
-namespace Controllers;
 
-use Models\ResourceModel;
+require "ResourceModel.php";
 
 class ResourceController {
     private $model;
