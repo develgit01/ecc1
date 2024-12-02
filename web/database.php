@@ -12,7 +12,7 @@ class Database {
         $this->conn = null;
         try {
             $this->conn = new PDO(
-                "mysql:host=ep-restless-bird-a2xx2dqs.eu-central-1.pg.koyeb.ap;dbname=koyebdb",
+                "mysql:ep-restless-bird-a2xx2dqs.eu-central-1.pg.koyeb.app;dbname=koyebdb",
                 "koyeb-adm",
                 "JIncLkX2yp9E"
             );
