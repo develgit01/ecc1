@@ -5,6 +5,11 @@ require_once "database.php";
 class ResourceModel {
     private $table;
     private $conn;
+    
+	// private $cnx;
+	// public function __construct(){
+	// 	$this->cnx=conexion::conex();
+	// }
 
     public function __construct($table) {
         $db = new Database();

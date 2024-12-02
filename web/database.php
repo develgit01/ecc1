@@ -1,25 +1,19 @@
 <?php
 
-class Database {
-    private $host = "ep-restless-bird-a2xx2dqs.eu-central-1.pg.koyeb.app";
-    private $dbname = "koyebdb";
-    private $user = "koyeb-adm";
-    private $pass = "JIncLkX2yp9E";
-    private $charset = 'utf8mb4';
-    public $conn;
-
-    public function connect() {
-        $this->conn = null;
-        try {
-            $this->conn = new PDO(
-                "mysql:ep-restless-bird-a2xx2dqs.eu-central-1.pg.koyeb.app;dbname=koyebdb",
-                "koyeb-adm",
-                "JIncLkX2yp9E"
-            );
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            echo "Error de conexión: " . $e->getMessage();
+class Database{
+	//Conexion a la base de datos
+	public function connect(){	
+		$host = 'ep-restless-bird-a2xx2dqs.eu-central-1.pg.koyeb.app';
+		$dbname = 'koyebdb';
+		$username = 'koyeb-adm';
+		$password = 'JIncLkX2yp9E';
+        try{
+            $pdo = new PDO("mysql:host=".$host.";dbname=".$dbname.";charset=utf8",$username,$password);
+        return $pdo;
+        }catch(PDOException $e){
+            echo $e->getMessage();
         }
-        return $this->conn;
     }
 }
+
+?>
