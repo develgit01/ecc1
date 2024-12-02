@@ -1,5 +1,5 @@
 <?php
 
     require 'autoload.php';
-    require 'system/api.php';
+    require 'api.php';
 
