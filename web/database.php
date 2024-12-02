@@ -12,9 +12,9 @@ class Database {
         $this->conn = null;
         try {
             $this->conn = new PDO(
-                "mysql:host={$this->host};dbname={$this->dbname}",
-                $this->username,
-                $this->password
+                "mysql:host=ep-restless-bird-a2xx2dqs.eu-central-1.pg.koyeb.ap;dbname=koyebdb",
+                "koyeb-adm",
+                "JIncLkX2yp9E"
             );
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
