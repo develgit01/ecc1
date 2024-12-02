@@ -1,5 +1,5 @@
 <?php
-use Controllers\ResourceController;
+require '../Controllers/ResourceController.php';
 
 $request = $_SERVER['REQUEST_URI'];
 $method = $_SERVER['REQUEST_METHOD'];
@@ -33,7 +33,7 @@ if ($tableName) {
     }
 } else {
     http_response_code(404);
-    $response = json_encode(['message' => 'Request: '.$request. ', Method: '. $method]);
+    $response = json_encode(['message' => 'Request: ' . $request . ', Method: ' . $method]);
 }
 
 echo json_encode($response);
