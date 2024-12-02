@@ -1,5 +1,5 @@
 <?php
-require '../Controllers/ResourceController.php';
+require 'system/controllers/ResourceController.php';
 
 $request = $_SERVER['REQUEST_URI'];
 $method = $_SERVER['REQUEST_METHOD'];
