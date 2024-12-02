@@ -3,27 +3,33 @@
 require_once "database.php";
 
 class ResourceModel {
-    private $tableName;
-    private $pdo;
+    private $table;
+    private $conn;
 
-    public function __construct($tableName) {
-        $this->tableName = $tableName;
-        $this->pdo = Database::getInstance()->getConnection();
+    public function __construct($table) {
+        $db = new Database();
+        $this->conn = $db->connect();
+        $this->table = $table;
     }
 
     public function getAll() {
-        $stmt = $this->pdo->query("SELECT * FROM $this->tableName");
+        $query = "SELECT * FROM {$this->table}";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getOne($id) {
-        $stmt = $this->pdo->prepare("SELECT * FROM $this->tableName WHERE id = :id");
-        $stmt->execute(['id' => $id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+    public function create($name, $email) {
+        $query = "INSERT INTO {$this->table} (name, email) VALUES (:name, :email)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':email', $email);
+        return $stmt->execute();
     }
 
     public function save($data) {
-        $stmt = $this->pdo->prepare("INSERT INTO $this->tableName (name) VALUES (:name)");
+        $stmt = $this->pdo->prepare("INSERT INTO $this->table (name) VALUES (:name)");
         $stmt->execute(['name' => $data['name']]);
     }
 }
+
