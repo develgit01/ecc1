@@ -1,7 +1,7 @@
 <?php
-namespace App\Controllers;
+namespace Controllers;
 
-use App\Models\ResourceModel;
+use Models\ResourceModel;
 
 class ResourceController {
     private $model;

@@ -1,7 +1,7 @@
 <?php
-namespace App\Models;
+namespace Models;
 
-use App\System\Database;
+use System\Database;
 use PDO;
 
 class ResourceModel {
