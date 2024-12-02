@@ -11,5 +11,5 @@ spl_autoload_register(function ($class) {
     }
     $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $class) . '.php';
 
-    require '/'.$fileName;
+    require $fileName;
 });
