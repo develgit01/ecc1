@@ -1,29 +1,30 @@
-# Usar una imagen base de PHP con Nginx
 FROM php:8.0-fpm
 
-# Instalar extensiones necesarias
-RUN docker-php-ext-install pdo pdo_mysql
+# Instalar dependencias y Nginx
+RUN apt-get update && apt-get install -y \
+    nginx \
+    curl \
+    && docker-php-ext-install pdo pdo_mysql \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Instalar Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Establecer el directorio de trabajo
+# Configurar directorios
 WORKDIR /workspace
 
-# Copiar el archivo composer.json y composer.lock
+# Copiar dependencias de Composer y luego instalar
 COPY composer.json composer.lock ./
+RUN composer install --no-interaction --prefer-dist
 
-# Instalar dependencias de Composer
-RUN composer install
-
-# Copiar el resto del código fuente
+# Copiar el resto del código
 COPY . .
 
-# Copiar el archivo de configuración de Nginx
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Copiar configuración de Nginx
+COPY nginx.conf /etc/nginx/nginx.conf
 
-# Exponer el puerto 8000 para Nginx
+# Asegurar que Nginx escuche en el puerto 8000
 EXPOSE 8000
 
-# Comando para iniciar PHP-FPM y Nginx
-CMD ["sh", "-c", "php-fpm & nginx -g 'daemon off;'"]
+# Script de inicio
+CMD service php8.0-fpm start && nginx -g 'daemon off;'
