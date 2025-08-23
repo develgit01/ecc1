@@ -1,30 +1,14 @@
-FROM php:8.0-fpm
+# Usa la imagen oficial de PHP con Apache
+FROM php:8.2-apache
 
-# Instalar dependencias y Nginx
-RUN apt-get update && apt-get install -y \
-    nginx \
-    curl \
-    && docker-php-ext-install pdo pdo_mysql \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+# Instala extensiones comunes de PHP (opcional)
+RUN docker-php-ext-install pdo pdo_mysql
 
-# Instalar Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Copia los archivos de la aplicación al directorio del servidor web
+COPY src/ /var/www/html/
 
-# Configurar directorios
-WORKDIR /workspace
+# Expone el puerto 80
+EXPOSE 80
 
-# Copiar dependencias de Composer y luego instalar
-COPY composer.json composer.lock ./
-RUN composer install --no-interaction --prefer-dist
-
-# Copiar el resto del código
-COPY . .
-
-# Copiar configuración de Nginx
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# Asegurar que Nginx escuche en el puerto 8000
-EXPOSE 8000
-
-# Script de inicio
-CMD service php8.0-fpm start && nginx -g 'daemon off;'
+# Inicia el servidor Apache en primer plano
+CMD ["apache2-foreground"]
